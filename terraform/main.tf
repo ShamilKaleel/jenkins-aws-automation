@@ -140,12 +140,12 @@ resource "aws_instance" "jenkins_server" {
   # Wait for SSH to be available
   provisioner "remote-exec" {
     inline = ["echo 'SSH connection established'"]
-
+    
     connection {
       type        = "ssh"
       user        = var.ssh_user
       host        = self.public_ip
-      private_key = file(var.ssh_private_key_path)  # This line loads the key file
+      private_key = file(var.ssh_private_key_path)
     }
   }
 }
