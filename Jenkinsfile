@@ -1,6 +1,10 @@
 pipeline {
     agent any
     
+    // tools {
+    //     terraform 'terraform'
+    // }
+    
     environment {
         AWS_CREDENTIALS = 'aws-credentials'
         SSH_CREDENTIALS = 'ec2-ssh-key'
@@ -67,19 +71,11 @@ pipeline {
         stage('Ansible Provision') {
             steps {
                 // Wait for a moment to ensure the EC2 instance is fully initialized
-                sh 'sleep 120'
+                sh 'sleep 60'
                 
                 withCredentials([sshUserPrivateKey(credentialsId: "${env.SSH_CREDENTIALS}", keyFileVariable: 'SSH_KEY')]) {
                     dir('ansible') {
-                        // Make sure we can see what's in the inventory file
-                        sh 'cat inventory'
-                        
-                        // Make SSH accept new hosts automatically
-                        sh 'mkdir -p ~/.ssh'
-                        sh 'echo "StrictHostKeyChecking no" > ~/.ssh/config'
-                        
-                        // Run Ansible with explicit SSH key
-                        sh 'ansible-playbook -i inventory jenkins-playbook.yml --private-key=${SSH_KEY} -v'
+                        sh 'ansible-playbook -i inventory jenkins-playbook.yml --private-key=${SSH_KEY}'
                     }
                 }
             }
