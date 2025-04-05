@@ -19,7 +19,7 @@ variable "instance_type" {
 variable "key_name" {
   description = "Name of the AWS key pair"
   type        = string
-  default     = "blog-app-key" # Using your existing key
+  default     = "blog-app" # Using your existing key
 }
 
 variable "ssh_user" {

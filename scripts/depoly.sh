@@ -43,7 +43,7 @@ echo -e "${GREEN}AWS credentials validated.${NC}"
 
 # Check if the specified key exists in AWS
 echo -e "${YELLOW}Checking if key pair exists in AWS...${NC}"
-KEY_NAME=$(grep key_name terraform/terraform.tfvars | cut -d'"' -f2 || echo "blog-app-key")
+KEY_NAME=$(grep key_name terraform/terraform.tfvars | cut -d'"' -f2 || echo "blog-app")
 if ! aws ec2 describe-key-pairs --key-names "$KEY_NAME" &> /dev/null; then
     echo -e "${RED}Key pair '$KEY_NAME' not found in AWS. Please create it or update the key_name in terraform.tfvars.${NC}"
     exit 1
