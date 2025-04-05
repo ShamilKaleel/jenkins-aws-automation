@@ -65,11 +65,16 @@ pipeline {
                     sshUserPrivateKey(credentialsId: "${env.SSH_CREDENTIALS}", keyFileVariable: 'SSH_KEY')
                 ]) {
                     dir('terraform') {
-                        sh 'terraform apply -auto-approve tfplan -var="ssh_private_key_path=${SSH_KEY}"'
+                        // Create temporary tfvars file with SSH key path
+                        sh 'echo "ssh_private_key_path = \\"${SSH_KEY}\\"" > ssh_key.auto.tfvars'
+                        // Apply the plan (without specifying variables on command line)
+                        sh 'terraform apply -auto-approve tfplan'
+                        // Clean up the temporary file
+                        sh 'rm ssh_key.auto.tfvars'
                     }
                 }
             }
-}
+        }
         
         stage('Ansible Provision') {
             steps {
