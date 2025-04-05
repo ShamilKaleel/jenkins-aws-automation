@@ -135,18 +135,6 @@ resource "aws_instance" "jenkins_server" {
   provisioner "local-exec" {
     command = "echo '[jenkins]\\n${self.public_ip} ansible_user=${var.ssh_user}' > ../ansible/inventory"
   }
-
-  # Wait for SSH to be available
-  provisioner "remote-exec" {
-    inline = ["echo 'SSH connection established'"]
-
-    connection {
-      type        = "ssh"
-      user        = var.ssh_user
-      host        = self.public_ip
-      # Private key will be provided by Jenkins credentials
-    }
-  }
 }
 
 # Run Ansible playbook
