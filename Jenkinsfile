@@ -1,9 +1,6 @@
 ﻿pipeline {
     agent any
-    
-    tools {
-        terraform 'terraform'
-    }
+
     
     environment {
         AWS_CREDENTIALS = 'aws-credentials'
