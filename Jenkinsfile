@@ -54,21 +54,21 @@ pipeline {
         }
         
         stage('Terraform Apply') {
-    steps {
-        withCredentials([
-            [
-                $class: 'AmazonWebServicesCredentialsBinding',
-                credentialsId: "${env.AWS_CREDENTIALS}",
-                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-            ],
-            sshUserPrivateKey(credentialsId: "${env.SSH_CREDENTIALS}", keyFileVariable: 'SSH_KEY')
-        ]) {
-            dir('terraform') {
-                sh 'terraform apply -auto-approve tfplan -var="ssh_private_key_path=${SSH_KEY}"'
+            steps {
+                withCredentials([
+                    [
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: "${env.AWS_CREDENTIALS}",
+                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ],
+                    sshUserPrivateKey(credentialsId: "${env.SSH_CREDENTIALS}", keyFileVariable: 'SSH_KEY')
+                ]) {
+                    dir('terraform') {
+                        sh 'terraform apply -auto-approve tfplan -var="ssh_private_key_path=${SSH_KEY}"'
+                    }
+                }
             }
-        }
-    }
 }
         
         stage('Ansible Provision') {
