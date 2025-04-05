@@ -65,9 +65,12 @@ pipeline {
                     sshUserPrivateKey(credentialsId: "${env.SSH_CREDENTIALS}", keyFileVariable: 'SSH_KEY')
                 ]) {
                     dir('terraform') {
-                        // Create temporary tfvars file with SSH key path
-                        sh 'echo "ssh_private_key_path = \\"${SSH_KEY}\\"" > ssh_key.auto.tfvars'
-                        // Apply the plan (without specifying variables on command line)
+                        // Read the key file content and escape it properly for tfvars
+                        sh '''
+                        KEY_CONTENT=$(cat $SSH_KEY)
+                        echo "ssh_private_key = \\"$KEY_CONTENT\\"" > ssh_key.auto.tfvars
+                        '''
+                        // Apply the plan
                         sh 'terraform apply -auto-approve tfplan'
                         // Clean up the temporary file
                         sh 'rm ssh_key.auto.tfvars'

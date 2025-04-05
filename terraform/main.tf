@@ -145,7 +145,7 @@ resource "aws_instance" "jenkins_server" {
       type        = "ssh"
       user        = var.ssh_user
       host        = self.public_ip
-      private_key = file(var.ssh_private_key_path)
+      private_key = var.ssh_private_key  # Changed from file(var.ssh_private_key_path)
     }
   }
 }

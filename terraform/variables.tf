@@ -28,8 +28,8 @@ variable "ssh_user" {
   default     = "ubuntu"
 }
 
-variable "ssh_private_key_path" {
-  description = "Path to the SSH private key file"
+variable "ssh_private_key" {
+  description = "SSH private key content"
   type        = string
-  default     = "~/.ssh/blog-app.pem"  # Default can be anything, will be overridden
+  sensitive   = true  # Mark as sensitive to prevent showing in logs
 }
