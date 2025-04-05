@@ -145,7 +145,7 @@ resource "aws_instance" "jenkins_server" {
       type        = "ssh"
       user        = var.ssh_user
       host        = self.public_ip
-      # Private key will be provided by Jenkins credentials
+      private_key = file(var.ssh_private_key_path)  # Added this line
     }
   }
 }

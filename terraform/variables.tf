@@ -27,3 +27,9 @@ variable "ssh_user" {
   type        = string
   default     = "ubuntu"
 }
+
+variable "ssh_private_key_path" {
+  description = "Path to the SSH private key file"
+  type        = string
+  default     = "~/.ssh/blog-app.pem"  # Adjust the default path as needed
+}
